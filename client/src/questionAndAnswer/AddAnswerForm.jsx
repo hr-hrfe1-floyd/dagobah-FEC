@@ -47,15 +47,17 @@ class AddAnswer extends React.Component {
         <AnswerForm>
           <h1>Submit An Answer</h1>
           <h3>Q: {this.props.question.body}</h3>
-          <label>Name:
+          <label>What is your nickname?:
             <input
               type="text"
               name="name"
               maxLength="60"
               required
+              placeholder="Example: jack543!"
               onChange={this.updateForm}
             />
           </label>
+          <p>For privacy reasons, do not use your full name or email</p>
           <br />
           <label>Email:
             <input
@@ -63,9 +65,11 @@ class AddAnswer extends React.Component {
               name="email"
               maxLength="60"
               required
+              placeholder="Example: jack@email.com"
               onChange={this.updateForm}
             />
           </label>
+          <p>For authentication reasons, you will not be emailed</p>
           <br />
           <label>
             Add an Answer:

@@ -66,11 +66,12 @@ const Breakdown = styled.div`
 `;
 
 const Average = styled.div`
-  font-size: 32px;
+  font-size: 3.2rem;
   text-align: center;
 `;
 
 const PercentRec = styled.div`
+  margin-bottom: 0.7rem;
   font-style: italic;
   text-align: center;
 `;

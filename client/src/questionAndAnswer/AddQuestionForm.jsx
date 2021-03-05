@@ -48,15 +48,16 @@ class AddQuestion extends React.Component {
   render() {
     return (
       <AddQuestionForm onSubmit={this.submitQuestion}>
-        <label>Nickname:
+        <label>What is your nickname?:
           <input type="text" required
             name="name"
             maxLength="60"
-            placeholder="Enter your name"
+            placeholder="Example: jackson11!"
             onChange={this.updateQuestion}
           /></label>
+        <p>For privacy reasons, do not use your full name or email address</p>
         <br />
-        <label>Email:
+        <label>Your email:
           <input
             type="email" required
             name="email"
@@ -65,6 +66,7 @@ class AddQuestion extends React.Component {
             onChange={this.updateQuestion}
           />
         </label>
+        <p>For authentication reasons, you will not be emailed</p>
         <br />
         <label>Question:
           <textarea

@@ -1,5 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+const CategoryHeader = styled.h4`
+  text-transform: uppercase;
+  font-weight: 300;
+  margin-bottom: 0.5rem;
+`;
+
+const NameHeader = styled.h1`
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+`;
 
 const ProductDetail = (props) => {
   if (!props || !props.product) {
@@ -7,9 +19,8 @@ const ProductDetail = (props) => {
   }
   return (
     <div>
-      <h4>Stars</h4>
-      <h4>{props.product.category}</h4>
-      <h1>{props.product.name}</h1>
+      <CategoryHeader>{props.product.category}</CategoryHeader>
+      <NameHeader>{props.product.name}</NameHeader>
     </div>
   );
 };

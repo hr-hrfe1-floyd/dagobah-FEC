@@ -21,7 +21,7 @@ SlideInfo.propTypes = {
 };
 
 const StyledSlideInfo = styled(SlideInfo)`
-  width: 150px;
+  width: 200px;
   height: 100px;
   background-color: #B0A8B9;
 `;

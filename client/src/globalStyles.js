@@ -2,16 +2,16 @@ import { createGlobalStyle } from 'styled-components';
 import styled from 'styled-components';
 
 //Color Palette:
-//Red: hsl(0, 100%, 60%) //<- used for salient or 'flavorful' elements
-//Pastel Purple: hsl(270, 80%, 96%) //<- secondary salient text color
-//Off-Black: hsl(0, 5%, 30%) //<- used for main text
-//Grey: hsl(0, 0%, 40%) //<- used for clickable and low-priority text
-//(Background) Red-Tinged Grey: hsl(0, 5%, 30%)
-//(Foreground) Red-Tinged White: hsl(0, 15%, 99%)
-//(Borders) White-Grey: #f2f2f2
+//Primary/Red: hsl(0, 100%, 60%) //<- used for salient or 'flavorful' elements
+//Secondary/Pastel Purple: hsl(270, 80%, 96%) //<- secondary salient text color
+//Low-Priority/Grey: hsl(0, 0%, 40%) //<- used for clickable and low-priority text
+//Black (Off-Black): hsl(0, 5%, 30%) //<- used for main text, body text defaults to this unless overridden
+//Page Background/Red-Tinged Grey: hsl(0, 5%, 30%)
+//Page Foreground/Red-Tinged White: hsl(0, 15%, 99%) //<- Tiles of content use this as background-color
+//Borders/White-Grey: #f2f2f2
 
 const PalettePreset = {
-  primary: 'hsl(270, 80%, 96%)',
+  primary: 'hsl(0, 100%, 60%)',
   secondary: 'hsl(270, 80%, 96%)',
   lowPriority: 'hsl(0, 0%, 40%)',
   black: 'hsl(0, 5%, 30%)',
@@ -20,17 +20,19 @@ const PalettePreset = {
   borderGrey: '#f2f2f2'
 };
 
+//NOTE: an rem here will represent 16px. If html's font-size were set to 62.5% (10px), each rem would be 10px, and 1.6rem would be 16px
 const GlobalPreset = createGlobalStyle`
+  html {
+    font-size: 62.5%;
+  }
   body {
     margin: 0 10%;
     color: hsl(0, 5%, 30%);
     background-color: hsl(345, 75%, 99%);
     font-family: Garamond, Helvetica, Arial;
-    font-size: 17px;
+    font-size: 170%;
   }
 `;
-//violet: hsl(259, 80%, 98%)
-//navy: hsl(240, 15%, 90%)
 
 const TilePreset = styled.div`
   background-color: hsl(0, 15%, 99%);
@@ -39,28 +41,27 @@ const TilePreset = styled.div`
 
 //different font maybe?
 const ModuleHeaderPreset = styled.h3`
-  font-size: 1.2em;
+  font-size: 2rem;
   margin-left: 3%;
-  padding: 5px 0;
+  padding: 0.5rem 0;
   text-decoration: underline 2px hsl(0, 0%, 40%);
 `;
 
-const ItalicPreset = styled.div`
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap');
-  font-family: Playfair Display, serif;
+//NOTE: font not finalized, we may wish to use an alt to Garamont so using <Italic> rather than manually setting font-style may save you future reworking
+const ItalicPreset = styled.span`
   font-style: italic;
 `;
 
 const ClickableTextPreset = styled.span`
   cursor: pointer;
   text-decoration: underline;
-  font-size: 0.8em;
+  font-size: 1.45rem;
   color: hsl(0, 0%, 40%);
 `;
 //ALT more salient red clickable color: hsl(0, 100%, 50%);
 
 const LowPriorityTextPreset = styled.span`
-  font-size: 0.75em;
+  font-size: 1.2rem;
   font-style: italic;
   color: hsl(0, 0%, 55%);
 `;
@@ -70,8 +71,9 @@ const ButtonPreset = styled.button`
   background-color: hsl(0, 15%, 99%);
   color: hsl(0, 0%, 40%);
   border: solid 1px #f2f2f2;
-  height: 40px;
-  padding: 0 15px;
+  height: 4rem;
+  padding: 0 1.5rem;
+  cursor: pointer;
 `;
 
 const DropdownMenuPreset = styled.select`
@@ -79,18 +81,19 @@ const DropdownMenuPreset = styled.select`
   background-color: hsl(0, 15%, 99%);
   color: hsl(0, 0%, 40%);
   border: solid 1px #f2f2f2;
-  height: 40px;
-  padding: 0 15px;
+  height: 4rem;
+  padding: 0 1.5rem;
 `;
 
 const ThumbnailPreset = styled.img`
   display: inline-block;
   border: 1px solid #f0f0f5;
   border-radius: 5px;
-  padding: 5px;
-  margin-right: 5px;
-  width: 100px;
-  height: 100px;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  width: 10rem;
+  height: 10rem;
+  cursor: pointer;
 `;
 
 const HelpfulPreset = styled.div`
@@ -107,11 +110,20 @@ const HelpfulYesPreset = styled.div`
 `;
 
 const SignaturePreset = styled.div`
+  @import url('https://fonts.googleapis.com/css2?family=Tangerine&display=swap');
+  font-family: Tangerine, cursive;
   display: inline-block;
-  @import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
-  font-family: 'Sacramento', cursive;
-  font-size: 20px;
+  font-size: 2rem;
   color: hsl(0, 100%, 60%);
+`;
+
+const ModalBackgroundPreset = styled.div`
+  background-color: hsla(0, 0%, 40%, 75%);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
 `;
 
 export const GlobalStyle = GlobalPreset;
@@ -127,3 +139,4 @@ export const HelpfulYes = HelpfulYesPreset;
 export const Signature = SignaturePreset;
 export const Palette = PalettePreset;
 export const Italic = ItalicPreset;
+export const ModalBackground = ModalBackgroundPreset;

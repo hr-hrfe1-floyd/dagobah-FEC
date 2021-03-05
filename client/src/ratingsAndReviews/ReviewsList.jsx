@@ -7,7 +7,7 @@ import { Tile, ModuleHeader, Button } from '../globalStyles.js';
 import IndividualReview from './IndividualReview.jsx';
 import Ratings from './Ratings.jsx';
 import FactorsBreakdown from './FactorsBreakdown.jsx';
-import SortDropdown from './SortDropdown.jsx';
+//import SortDropdown from './SortDropdown.jsx';
 
 class ReviewsList extends React.Component {
   constructor(props) {
@@ -120,10 +120,10 @@ const RatingComponent = styled(Tile)`
   flex-direction: column;
   order: 1;
   width: 25%;
-  margin-top: 7px;
-  margin-right: 7px;
+  margin-top: 0.7rem;
+  margin-right: 0.7rem;
   border-bottom: 1px solid #f0f0f5;
-  padding: 0px 10px;
+  padding: 0 1rem 1rem 1rem;
 `;
 
 const ReviewsComponent = styled.div`
@@ -132,12 +132,12 @@ const ReviewsComponent = styled.div`
 `;
 
 const ReviewsButton = styled(Button)`
-  margin-top: 7px;
-  margin-right: 7px;
+  margin-top: 0.7rem;
+  margin-right: 0.7rem;
 `;
 
 const Footer = styled.div`
-  padding: 15px 0;
+  padding: 1.5rem 0;
 `;
 
 ReviewsList.propTypes = {

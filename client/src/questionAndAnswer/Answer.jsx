@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { Thumbnail, Helpful, HelpfulYes } from '../globalStyles.js';
+
 class Answer extends React.Component {
   constructor(props) {
     super(props);
@@ -58,7 +60,14 @@ class Answer extends React.Component {
     return (
       <AnswerContainer>
         <div className="answer"><strong>A:</strong> {answer.body}</div>
-        <div className="answer-links">by {answer.answerer_name}, {prettyDate} | Helpful?  <LinkText onClick={this.handleHelpful}>Yes ({answer.helpfulness})</LinkText> | <LinkText onClick={this.handleReport}>{!this.state.isReported ? 'Report' : 'Reported!'}</LinkText></div>
+        <Gallery>
+          {answer.photos.length !== 0 ? answer.photos.map((photo) => {
+            return (
+              <Thumbnail src={photo} key={photo} onClick={() => console.log('Info', photo)} />
+            );
+          }) : null}
+        </Gallery>
+        <div className="answer-links">by {answer.answerer_name}, {prettyDate} | <Helpful>Helpful? </Helpful> <HelpfulYes onClick={this.handleHelpful}>Yes ({answer.helpfulness})</HelpfulYes> | <HelpfulYes onClick={this.handleReport}>{!this.state.isReported ? 'Report' : 'Reported!'}</HelpfulYes></div>
       </AnswerContainer>
     );
   }
@@ -70,16 +79,15 @@ Answer.propTypes = {
   markOrReport: PropTypes.func.isRequired,
 };
 
+const Gallery = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+`;
+
 const AnswerContainer = styled.div`
   grid-area: answerContainer;
   grid-row: span 1;
-`;
-
-const LinkText = styled.span`
-  text-decoration: underline;
-  :hover {
-    text-decoration: none;
-  }
 `;
 
 // accidentally deleted my branch

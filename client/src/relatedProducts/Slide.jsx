@@ -32,8 +32,10 @@ Slide.propTypes = {
 };
 
 const StyledSlide = styled(Slide)`
-  width: 150px;
-  height: 200px;
+  margin: 10px;
+  width: 200px;
+  height: 300px;
+  flex: 0 0 auto;
   background-color: grey;
   display: flex;
   flex-direction: column;

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Tile, LowPriorityText, ClickableText, Thumbnail, Signature, Helpful, HelpfulYes } from '../globalStyles.js';
+import { Tile, Italic, LowPriorityText, ClickableText, Signature, Helpful, HelpfulYes } from '../globalStyles.js';
 import StarRow from '../starRow.jsx';
 import ModalImage from '../ModalImage.jsx';
 
@@ -21,7 +21,7 @@ class IndividualReview extends React.Component {
 
   render() {
     let review = this.props.review;
-    //review.summary = 'It was the best of shreks, it was the worst of shreks, it was the age of shrekdom, it was the age of shrekishness, it was the epoch of shreklief, it was the epoch of inshrekulity'; //long summary test
+    // review.summary = 'It was the best of shreks, it was the worst of shreks, it was the age of shrekdom, it was the age of shrekishness, it was the epoch of shreklief, it was the epoch of inshrekulity'; //long summary test
     let summary = review.summary;
     if (summary.length > 60) {
       let cutoff = 60;
@@ -52,7 +52,7 @@ class IndividualReview extends React.Component {
     }
 
     let response = null;
-    //review.response = 'It was the best of shreks, it was the worst of shreks, it was the age of shrekdom, it was the age of shrekishness, it was the epoch of shreklief, it was the epoch of inshrekulity, it was the shrekson of light, it was the shrekson of darkness, it was  the swamp of hope, it was the farquaad of shrekspair.';
+    // review.response = 'It was the best of shreks, it was the worst of shreks, it was the age of shrekdom, it was the age of shrekishness, it was the epoch of shreklief, it was the epoch of inshrekulity, it was the shrekson of light, it was the shrekson of darkness, it was  the swamp of hope, it was the farquaad of shrekspair.';
     if (review.response) {
       response = <Response><span><Seller>Seller: </Seller>{review.response}</span></Response>;
     }
@@ -86,63 +86,65 @@ class IndividualReview extends React.Component {
         {response}
         <br></br>
         <Helpful>Helpful? <HelpfulYes onClick={() => { this.helpfulVote(); }}>Yes</HelpfulYes> ({review.helpfulness})</Helpful>
-        {/* <p>{JSON.stringify(this.props.review)}</p> */}
+        <p>{JSON.stringify(this.props.review)}</p>
       </Review>
     );
   }
 }
 
 const Review = styled(Tile)`
-  margin-top: 7px;
-  padding-left: 12px;
-  padding-top: 7px;
-  padding-bottom: 7px;
+  margin-top: 0.7rem;
+  padding-left: 1.2rem;
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
   border-bottom: 1px solid #f0f0f5;
 `;
 
-const Summary = styled.div`
-  font-style: italic;
-  font-size: 1.1em;
-  margin-bottom: 5px;
+const Summary = styled(Italic)`
+  font-size: 1.05em;
+  margin-top: -0.3rem;
+  margin-bottom: -0.3rem;
 `;
 
-const SummaryExtra = styled.span`
+const SummaryExtra = styled(Italic)`
   font-size: 0.75em;
-  font-style: italic;
-  line-height: 50%;
   color: grey;
-  margin-top: -5px;
-  `;
+  margin-top: --0.5rem;
+`;
 
 const ReviewerInfo = styled.div`
   display: inline-block;
   float: right;
-  margin: 5px 10% 5px 5%;
-  width: 166px;
+  margin: 0.5rem 5% 0.5rem 5%;
+  width: 17.5rem;
 `;
 
 const ReviewDate = styled(LowPriorityText)`
   margin-top: -50px;
-  margin-left: 10%;
+  margin-left: 12%;
 `;
 
 const Recommend = styled.div`
-  margin-top: -5px;
+  margin-top: -0.4rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-basis: 100%;
 `;
 
-const RedCheck = styled.span`
+const RedCheck = styled.div`
   color: hsl(0, 100%, 60%);
   font-size: 1.2em;
 `;
 
 const RecText = styled.span`
   font-size: 0.9em;
-  padding-left: 2px;
+  padding-left: 0.2rem;
 `;
 
 const ReviewBody = styled.span`
   display: inline-block;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
   margin-right: 20%;
 `;
 
@@ -153,7 +155,7 @@ const ShowMore = styled(ClickableText)`
 const Gallery = styled.div`
   display: flex;
   justify-content: space-around;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
 `;
 
 const Seller = styled.b`
@@ -163,8 +165,8 @@ const Seller = styled.b`
 const Response = styled.div`
   display: block;
   background-color: hsl(270, 80%, 96%);
-  border-radius: 7px;
-  padding: 5px 10px;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
   margin-left: 3%;
   width: 70%;
 `;

@@ -149,7 +149,7 @@ class QuestionAndAnswer extends React.Component {
           markOrReport={this.markOrReport}
           question={question} key={question.question_id} getMoreAnswers={this.state.getMoreAnswers} product={this.props.product_id}/>))}
         <StyledLoadAnswers><a
-          onClick={this.getMoreAnswers}>Load More Answers</a></StyledLoadAnswers>
+          onClick={this.getMoreAnswers}>{this.state.getMoreAnswers ? 'Collapse Answers' : 'See More Answers'}</a></StyledLoadAnswers>
         <StyledButtons>
           <button onClick={this.getMoreQuestions}>More Answered Questions</button>
           <button onClick={this.toggleAddQuestion}>Add A Question</button>

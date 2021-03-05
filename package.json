@@ -4,7 +4,7 @@
   "description": "Front-end capstone project for HackReactor HR-RFE1",
   "main": "index.js",
   "scripts": {
-    "test": "jest --passWithNoTests",
+    "test": "jest -c jest.config.js",
     "build": "webpack --watch --config webpack.config.js",
     "start": "nodemon server/index.js",
     "postinstall": "curl -s https://raw.githubusercontent.com/hackreactor/precourse-pomander/master/bin/install | bash"
@@ -52,6 +52,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
+    "eslint-plugin-jest-dom": "^3.6.5",
     "express": "^4.17.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",

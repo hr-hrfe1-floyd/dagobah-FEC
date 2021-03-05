@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Answer from './Answer';
 import AddAnswer from './AddAnswerForm';
+import { Helpful, HelpfulYes } from '../globalStyles.js';
+
 
 class Question extends React.Component {
   constructor(props) {
@@ -68,10 +70,10 @@ class Question extends React.Component {
       <StyledQuestion>
         <QuestionBody><strong>Q: {question.question_body}</strong></QuestionBody>
         <QuestionLinks>
-          <LinkText
+          <HelpfulYes
             onClick={this.handleReport}>
             {!this.state.isReported ? 'Report' : 'Reported!'}
-          </LinkText> | Helpful? <LinkText onClick={this.handleHelpful}>Yes({question.question_helpfulness})</LinkText> | <LinkText onClick={this.toggleAddAnswer}>Add Answer</LinkText></QuestionLinks>
+          </HelpfulYes> | <Helpful>Helpful?</Helpful> <HelpfulYes onClick={this.handleHelpful}>Yes({question.question_helpfulness})</HelpfulYes> | <HelpfulYes onClick={this.toggleAddAnswer}>Add Answer</HelpfulYes></QuestionLinks>
         {answers.map((answer) => (<Answer markOrReport={this.props.markOrReport} answer={answer} key={answer.id} />) )}
         <AddAnswer toggle={this.state.isAddAnswerVisible} handleClick={this.toggleAddAnswer} question={ {body: question.question_body, id: question.question_id} } />
       </StyledQuestion>
@@ -109,13 +111,6 @@ const QuestionBody = styled.div`
 const QuestionLinks = styled.div`
   grid-area: links;
   justify-self: end;
-`;
-
-const LinkText = styled.span`
-  text-decoration: underline;
-  :hover {
-    text-decoration: none;
-  }
 `;
 
 // first row is two columns

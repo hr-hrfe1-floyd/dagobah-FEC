@@ -82,8 +82,8 @@ OutfitCarousel.propTypes = {
 };
 
 const FirstSlide = styled.div`
-  width: 150px;
-  height: 200px;
+  width: 200px;
+  height: 300px;
   background-color: grey;
   display: flex;
   flex-direction: column;
