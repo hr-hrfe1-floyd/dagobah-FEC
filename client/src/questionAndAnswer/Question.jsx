@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Answer from './Answer';
 import AddAnswer from './AddAnswerForm';
-import { Helpful, HelpfulYes } from '../globalStyles.js';
+import { Helpful, HelpfulYes, Tile } from '../globalStyles.js';
 
 
 class Question extends React.Component {
@@ -52,11 +52,8 @@ class Question extends React.Component {
 
   render() {
     // Incase this prop is empty render nothing onscreen
-    if (this.props.question === undefined) {
-      return '';
-    }
     // Create aliases
-    let question = this.props.question;
+    let question = !this.props.question ? '' : this.props.question;
     let answers = Object.values(question.answers).sort((a, b) => { return b.helpfulness - a.helpfulness; });
     // if there are no answers return an empty array, else return max 2 answers
     if (!answers.length) {
@@ -67,16 +64,20 @@ class Question extends React.Component {
 
     // render a question
     return (
-      <StyledQuestion>
-        <QuestionBody><strong>Q: {question.question_body}</strong></QuestionBody>
+      <QuestionWrapper>
+        <QuestionSummary>Q: {question.question_body}</QuestionSummary>
         <QuestionLinks>
           <HelpfulYes
             onClick={this.handleReport}>
             {!this.state.isReported ? 'Report' : 'Reported!'}
           </HelpfulYes> | <Helpful>Helpful?</Helpful> <HelpfulYes onClick={this.handleHelpful}>Yes({question.question_helpfulness})</HelpfulYes> | <HelpfulYes onClick={this.toggleAddAnswer}>Add Answer</HelpfulYes></QuestionLinks>
         {answers.map((answer) => (<Answer markOrReport={this.props.markOrReport} answer={answer} key={answer.id} />) )}
-        <AddAnswer toggle={this.state.isAddAnswerVisible} handleClick={this.toggleAddAnswer} question={ {body: question.question_body, id: question.question_id} } />
-      </StyledQuestion>
+        <AddAnswer
+          toggle={this.state.isAddAnswerVisible}
+          handleClick={this.toggleAddAnswer}
+          question={ {body: question.question_body, id: question.question_id} }
+          product={this.props.product} />
+      </QuestionWrapper>
     );
   }
 }
@@ -84,14 +85,15 @@ class Question extends React.Component {
 
 // each question should be an object
 Question.propTypes = {
-  question: PropTypes.object.isRequired,
+  question: PropTypes.object,
   getMoreAnswers: PropTypes.bool.isRequired,
   markOrReport: PropTypes.func.isRequired,
+  product: PropTypes.object
 };
 
 // style the components
-const StyledQuestion = styled.div`
-  grid-area: styledQuestion;
+const QuestionWrapper = styled(Tile)`
+  grid-area: styled-question;
   grid-row: span 1;
   display: inline-grid;
   grid-template-columns: 70% 30%;
@@ -100,15 +102,23 @@ const StyledQuestion = styled.div`
   grid-auto-flow: column;
   grid-template-areas:
     "question links"
-    "answerContainer ."
+    "answer-wrapper ."
     "addAnswer .";
+
+  margin-top: 0.44rem;
+  margin-bottom: 0.75rem;
+  padding: 7px 12px 7px 0;
 `;
 
-const QuestionBody = styled.div`
+const QuestionSummary = styled.span`
   grid-area: question;
+  font-size: 1.05em;
+  font-weight: bold;
+  margin-top: -5px;
+  margin-bottom: -7px;
 `;
 
-const QuestionLinks = styled.div`
+const QuestionLinks = styled.span`
   grid-area: links;
   justify-self: end;
 `;

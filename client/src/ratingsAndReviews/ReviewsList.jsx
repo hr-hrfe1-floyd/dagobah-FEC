@@ -7,7 +7,8 @@ import { Tile, ModuleHeader, Button } from '../globalStyles.js';
 import IndividualReview from './IndividualReview.jsx';
 import Ratings from './Ratings.jsx';
 import FactorsBreakdown from './FactorsBreakdown.jsx';
-//import SortDropdown from './SortDropdown.jsx';
+import SortDropdown from './SortDropdown.jsx';
+import AddReviewModal from './AddReviewModal.jsx';
 
 class ReviewsList extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class ReviewsList extends React.Component {
       reviews: null,
       renderedReviews: null,
       filters: [],
-      sortOrder: 'relevance'
+      sortOrder: 'relevance',
     };
   }
 
@@ -28,7 +29,7 @@ class ReviewsList extends React.Component {
 
   getReviews(sortOrder) {
     //if(!sortOrder){sort order = 'newest';}
-    axios.get('/api/reviews', {
+    return axios.get('/api/reviews', {
       params: {
         product_id: this.state.product_id,
         sort: sortOrder
@@ -61,6 +62,18 @@ class ReviewsList extends React.Component {
     }
   }
 
+  newSort(sort) {
+    this.setState({sortOrder: sort}, () => {
+      let sortOrder = 'relevant';
+      if (sort === 'helpfulness') { sortOrder = 'helpful'; }
+      if (sort === 'newest') { sortOrder = 'newest'; }
+      this.getReviews(sortOrder)
+        .then(()=> {
+          this.sortAndFilter(this.state.sortOrder, this.state.filters);
+        });
+    });
+  }
+
   sortAndFilter(sortOrder, filters) {
     let renderedReviews = [];
     if (filters.length === 0) {
@@ -81,14 +94,13 @@ class ReviewsList extends React.Component {
 
   render() {
     if (!this.state.reviews) {
-      return (<div></div>);
+      return (<AddReviewModal></AddReviewModal>);
     } else {
       return (
         <div>
           <ModuleHeader>Ratings &amp; Reviews</ModuleHeader>
-          {/* <p>#### reviews, sorted by this.state.sortOrder</p> */}
-          {/* <SortDropdown></SortDropdown> */}
-          <MasterComponent>
+          <SortWrap><SortDropdown newSort={this.newSort.bind(this)} sortOrder={this.state.sortOrder}></SortDropdown></SortWrap>
+          <RatingsReviewsPanel>
             <RatingComponent>
               <Ratings reviews={this.state.reviews} filters={this.state.filters} newFilter={this.newFilter.bind(this)}/>
               <FactorsBreakdown />
@@ -99,10 +111,10 @@ class ReviewsList extends React.Component {
                 return (<IndividualReview key={review.review_id} review={review} />);
               })}
               <ReviewsButton>MORE REVIEWS</ReviewsButton>
-              <ReviewsButton>ADD A REVIEW  +</ReviewsButton>
+              <AddReviewModal></AddReviewModal>
               {/* First two reviews should render plus if more reviews exist a button should render to expand ReviewsList w two add'l reviews */}
             </ReviewsComponent>
-          </MasterComponent>
+          </RatingsReviewsPanel>
           <Footer></Footer>
         </div>
       );
@@ -110,8 +122,16 @@ class ReviewsList extends React.Component {
   }
 }
 
-//flex-box goes here
-const MasterComponent = styled.div`
+const SortWrap = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 0.7rem;
+  position: relative;
+  height: 4rem;
+  overflow: visible;
+`;
+
+const RatingsReviewsPanel = styled.div`
   display: flex;
 `;
 

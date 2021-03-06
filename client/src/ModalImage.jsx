@@ -38,7 +38,6 @@ class ModalImage extends React.Component {
 }
 
 const ModalWindow = styled(ModalBackground)`
-  z-index: 100;
   position: fixed;
   width: 100%;
   height: 100%;

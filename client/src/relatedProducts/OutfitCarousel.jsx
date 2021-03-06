@@ -58,16 +58,15 @@ class OutfitCarousel extends React.Component {
   render() {
     return (
       <>
-        <FirstSlide>
-          First Slide
-          <button onClick={this.addProductClickHandler}>add to outfit</button>
+        <FirstSlide onClick={this.addProductClickHandler}>
+          <p>Add Product to Outfit</p>
         </FirstSlide>
         {Object.values(this.state.yourOutfit).map((product) => {
           return <StyledSlide data={product}
             cardButtonClick={this.removeProductClickHandler}
             key={product.id}
             render={onClick => (
-              <button onClick={onClick}>x</button>
+              <Button onClick={onClick}>x</Button>
             )}>
           </StyledSlide>;
         })}
@@ -85,11 +84,28 @@ const FirstSlide = styled.div`
   width: 200px;
   height: 300px;
   background-color: grey;
+  margin: 0.5em;
+  cursor: pointer;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
 
+  p {
+    color: white;
+    font-size: 1em;
+  }
+`;
+
+const Button = styled.button`
+  font-size: 1em;
+  color: white;
+  background: none;
+  border: none;
+  width: 25%;
+  position: absolute;
+  top: 0%;
+  left: 80%;
+  cursor: pointer;
 `;
 
 

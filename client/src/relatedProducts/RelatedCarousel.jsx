@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import StyledSlide from './Slide.jsx';
+import Slide from './Slide.jsx';
 import StyledModal from './Modal.jsx';
 import styled from 'styled-components';
-
 
 class RelatedCarousel extends React.Component {
   constructor(props) {
@@ -39,16 +38,23 @@ class RelatedCarousel extends React.Component {
     return (
       <>
         {Object.values(this.props.data).map((product) => {
-          return <StyledSlide data={product}
-            value={product}
-            cardButtonClick={this.cardButtonClick}
-            key={product.id}
-            render={onClick => (
-              <Button onClick={onClick}>★</Button>
-            )}>
-          </StyledSlide>;
+          return (
+            <Slide
+              key={product.id}
+              data={product}
+              value={product}
+              cardButtonClick={this.cardButtonClick}
+              render={onClick => (
+                <Button onClick={onClick}>★</Button>
+              )}>
+            </Slide>
+          );
         })}
-        <StyledModal show={this.state.showModal}
+
+
+        <StyledModal
+          id='related-products-modal'
+          show={this.state.showModal}
           handleClose={this.hideModal}
           data={this.state.clickedProduct}
           currentProduct={this.props.currentProduct}/>
@@ -67,6 +73,8 @@ const Button = styled.button `
   position: absolute;
   top: 0%;
   left: 80%;
+  cursor: pointer;
+
 `;
 
 RelatedCarousel.propTypes = {

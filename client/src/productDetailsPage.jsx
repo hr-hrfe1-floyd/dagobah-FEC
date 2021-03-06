@@ -15,19 +15,6 @@ class ProductDetailsPage extends React.Component {
     };
   }
 
-  render() {
-    const id = this.props.product_id;
-    return (
-      <div>
-        <Navbar />
-        <Overview key={'overview-module-' + id} product_id={id} product={this.state.product}/>
-        <RelatedProducts key={'related-module-' + id} product_id={id} product={this.state.product}/>
-        <QuestionAndAnswer key={'questions-module-' + id} product_id={id}/>
-        <ReviewsList key={'reviews-module-' + id} product_id={this.props.product_id}/>
-      </div>
-    );
-  }
-
   componentDidMount() {
     const product_id = this.props.product_id;
     if (!product_id) {
@@ -58,6 +45,19 @@ class ProductDetailsPage extends React.Component {
         }
         throw Error('error fetching product data');
       });
+  }
+
+  render() {
+    const id = this.props.product_id;
+    return (
+      <div>
+        <Navbar />
+        <Overview key={'overview-module-' + id} product_id={id} product={this.state.product}/>
+        <RelatedProducts key={'related-module-' + id} product_id={id} product={this.state.product}/>
+        <QuestionAndAnswer key={'questions-module-' + id} product_id={id} product={this.state.product} />
+        <ReviewsList key={'reviews-module-' + id} product_id={this.props.product_id}/>
+      </div>
+    );
   }
 }
 

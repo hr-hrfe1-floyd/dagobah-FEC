@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Question from './Question';
 import SearchQuestion from './SearchQuestion';
 import AddQuestion from './AddQuestionForm';
+import { Button } from '../globalStyles.js';
 
 class QuestionAndAnswer extends React.Component {
   constructor(props) {
@@ -28,25 +29,29 @@ class QuestionAndAnswer extends React.Component {
   }
 
   getQuestions(page, count) {
-    return axios.get('/api/qa/questions', {
-      params: {
-        product_id: this.props.product_id,
-        page: page,
-        count: count
-      }
-    })
-      .then(({ data }) => {
-        // sort the questions by question_helpfulness
-        data.results.sort((a, b) => {
-          return b.question_helpfulness - a.question_helpfulness;
-        });
-        this.setState({
-          questions: data.results
-        });
+    if (this.props.product_id) {
+      return axios.get('/api/qa/questions', {
+        params: {
+          product_id: this.props.product_id,
+          page: page,
+          count: count
+        }
       })
-      .catch((err) => {
-        console.error(err);
-      });
+        .then(({ data }) => {
+          // sort the questions by question_helpfulness
+          data.results.sort((a, b) => {
+            return b.question_helpfulness - a.question_helpfulness;
+          });
+          this.setState({
+            questions: data.results
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      return '';
+    }
   }
 
   componentDidMount() {
@@ -61,7 +66,6 @@ class QuestionAndAnswer extends React.Component {
 
   // type in a term and update the state
   searchQuestions(e) {
-    // console.log(e.target.value);
     this.setState({
       searchTerm: e.target.value
     });
@@ -76,7 +80,6 @@ class QuestionAndAnswer extends React.Component {
             let currentQuestion = this.state.questions[q];
             if (currentQuestion.question_body.includes(this.state.searchTerm)) {
               results.push(currentQuestion);
-              console.log(results);
             }
           }
         })
@@ -103,14 +106,16 @@ class QuestionAndAnswer extends React.Component {
       getMoreQuestions: !this.state.getMoreQuestions
     });
     this.getQuestions(1, 999);
+
+
   }
   // if the user wants to load more answers click on the button and update the state
   getMoreAnswers() {
     this.setState({
       getMoreAnswers: !this.state.getMoreAnswers
     });
+    this.getQuestions(1, 999);
   }
-
 
   markOrReport(endpoint, id, handler) {
     // set question helpfulness
@@ -131,13 +136,16 @@ class QuestionAndAnswer extends React.Component {
   }
 
   render() {
-    let questions = this.state.questions;
-    // if there are no questions pass in an empty array, else if there are more than four questions only pass the first four
-    if (!questions.length) {
-      questions = [];
-    } else if (questions.length > 4 && !this.state.getMoreQuestions) {
+    var questions = this.state.questions ? this.state.questions.slice(0, 4) : null;
+
+    if (this.state.getMoreQuestions && this.state.questions.length > 4) {
+      questions.concat(this.state.questions.slice(4, 2));
+    } else if (this.state.questions.length === questions.length) {
       questions = this.state.questions.slice(0, 4);
     }
+
+
+
     // render our module
     return (
       <QuestionContainer>
@@ -145,56 +153,94 @@ class QuestionAndAnswer extends React.Component {
         <SearchQuestion
           onChange={this.searchQuestions}
           value={this.state.searchTerm}/>
-        {questions.map((question) => (<Question
-          markOrReport={this.markOrReport}
-          question={question} key={question.question_id} getMoreAnswers={this.state.getMoreAnswers} product={this.props.product_id}/>))}
-        <StyledLoadAnswers><a
-          onClick={this.getMoreAnswers}>{this.state.getMoreAnswers ? 'Collapse Answers' : 'See More Answers'}</a></StyledLoadAnswers>
-        <StyledButtons>
-          <button onClick={this.getMoreQuestions}>More Answered Questions</button>
-          <button onClick={this.toggleAddQuestion}>Add A Question</button>
-        </StyledButtons>
-        {this.state.isAddQuestionVisible ? (
-          <AddQuestion product={this.props.product_id} handleSubmit={this.toggleAddQuestion}/>
-        ) : null}
+        <QuestionList
+          loadAnswers={this.state.getMoreAnswers}
+          loadQuestions={this.state.getMoreQuestions}>
+          {this.state.questions ? questions.map((question) => (<Question
+            key={question.question_id}
+            markOrReport={this.markOrReport}
+            getMoreAnswers={this.state.getMoreAnswers}
+            question={question}
+            product={this.props.product} />)) : null}
+        </QuestionList>
+        <MoreAnswers><a
+          onClick={this.getMoreAnswers}>{this.state.getMoreAnswers ? 'Collapse Answers' : 'See More Answers'}</a></MoreAnswers>
+        <MoreInfo>
+          <Button onClick={this.getMoreQuestions}>More Answered Questions</Button>
+          <Button onClick={this.toggleAddQuestion}>Add A Question</Button>
+        </MoreInfo>
+        <AddQuestion
+          product={this.props.product}
+          handleClick={this.toggleAddQuestion}
+          toggle={this.state.isAddQuestionVisible}
+        />
       </QuestionContainer>
     );
   }
 }
 
 // style the question module
-const QuestionContainer = styled.div`
+const QuestionContainer = styled.main`
   display: grid;
   grid-template-columns: 66%
   grid-template-rows: auto;
   grid-auto-columns: 100%;
   grid-auto-flow: column;
   grid-template-areas:
-    "questionHeader"
-    "searchQuestion"
-    "styledQuestion"
+    "question-header"
+    "search-question"
+    "question-list"
     "styledLoadAnswers"
     "styledButtons"
     "addQuestion";
 `;
 
 const QuestionHeader = styled.h3`
-  grid-area: questionHeader;
+  grid-area: question-header;
   grid-row: span 1;
 `;
 
-const StyledLoadAnswers = styled.div`
+const QuestionList = styled.section`
+  grid-area: question-list;
+  display: inline-grid;
+  grid-row: span 1;
+  overflow: auto;
+  height: ${props => props.loadAnswers ? '50%' : 'auto'};
+  grid-template-areas:
+    "styled-question";
+
+
+`;
+
+const MoreAnswers = styled.div`
   grid-area: styledLoadAnswers;
   grid-row: span 1;
 `;
 
-const StyledButtons = styled.div`
+const MoreInfo = styled.section`
   grid-area: styledButtons;
   grid-row: span 1;
 `;
+
+// const Button = styled.button`
+//   text-transform: uppercase;
+//   padding: 15px;
+//   margin-top: 10px;
+//   margin-right: 10px;
+//   color: ${Palette.black};
+//   background-color: ${Palette.background};
+//   border: 2px solid ${Palette.secondary};
+//   border-radius: 5px;
+
+//   &:hover {
+//     border: 2px solid ${Palette.primary};
+//   }
+// `;
+
 // the product id should be a number
 QuestionAndAnswer.propTypes = {
-  product_id: PropTypes.number
+  product_id: PropTypes.number,
+  product: PropTypes.object
 };
 // deleted my branch on accident
 export default QuestionAndAnswer;
